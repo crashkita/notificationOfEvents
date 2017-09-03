@@ -1,0 +1,23 @@
+version: '2'
+services:
+  nginx:
+    extends:
+      file: common-compose.yml
+      service: nginx
+    depends_on:
+    - php
+    ports:
+    - "8094:80"
+
+  php:
+    extends:
+      file: common-compose.yml
+      service: php
+    depends_on:
+    - mysql
+  mysql:
+    extends:
+      file: common-compose.yml
+      service: mysql
+    ports:
+      - "3307:3306"
