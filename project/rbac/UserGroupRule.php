@@ -11,27 +11,16 @@ use app\models\User;
  */
 class UserGroupRule extends Rule
 {
-    /**
-     * @inheritdoc
-     */
-    public $name = 'userGroup';
+    public $name = 'isAuthor';
 
     /**
-     * @inheritdoc
+     * @param string|int $user the user ID.
+     * @param Item $item the role or permission that this rule is associated with
+     * @param array $params parameters passed to ManagerInterface::checkAccess().
+     * @return bool a value indicating whether the rule permits the role or permission it is associated with.
      */
     public function execute($user, $item, $params)
     {
-        if (!Yii::$app->user->isGuest) {
-            $role = Yii::$app->user->identity->role;
-
-            if ($item->name === 'admin') {
-                return $role === User::ROLE_ADMIN;
-            } elseif ($item->name === 'moderator') {
-                return $role === User::ROLE_MODERATOR || $role === User::ROLE_ADMIN;
-            }  elseif ($item->name === 'user') {
-                return $role === User::ROLE_USER  || $role === User::ROLE_PRODUCT_MODERATOR || $role === User::ROLE_MODERATOR || $role === User::ROLE_ADMIN;
-            }
-        }
-        return false;
+        return isset($params['publication']) ? $params['publication']->created_by == $user : false;
     }
 }

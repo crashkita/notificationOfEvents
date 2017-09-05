@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\search\PublicationSearch;
 use Yii;
 use app\models\Publication;
 use app\models\searchPublicationSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,10 +22,34 @@ class PublicationController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['managePost'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['viewPost'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createPost'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updatePost'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete'],
+                        'roles' => ['deletePost'],
+                    ],
                 ],
             ],
         ];
@@ -35,7 +61,7 @@ class PublicationController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new searchPublicationSearch();
+        $searchModel = new PublicationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
