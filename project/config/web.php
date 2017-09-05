@@ -11,6 +11,11 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -22,6 +27,9 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'on afterLogin' => function ($event) {
+                Yii::$app->user->identity->afterLogin();
+            }
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -31,10 +39,12 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'viewPath' => '@common/mail',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => '127.0.0.1',
+                'port' => '25',
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -46,14 +56,17 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller>/index' => '<controller>/index',
+                '<controller>/update/<id:\w+>' => '<controller>/update',
+                '<controller>/edit/<id:\w+>' => '<controller>/edit',
+                '<controller>/delete/<id:\w+>' => '<controller>/delete',
+                '<controller>/create/<parentId:\w+>' => '<controller>/create',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
@@ -64,14 +77,14 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => [ '127.0.0.1', '::1', '*']
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['81.18.136.*', '192.168.113.*', '127.0.0.1', '::1', '*']
     ];
 }
 
