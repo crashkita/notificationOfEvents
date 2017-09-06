@@ -12,9 +12,6 @@
                 form.find('input').closest('div').removeClass('error');
                 form.find('.help-block, .text-danger').html('');
 
-                var serviceResult = form.find('.serviceResult');
-                serviceResult.hide();
-
                 if (!response.success) {
                     Object.keys(response).map(function (field, index) {
                         var fieldElement = form.find('#' + field);
@@ -48,11 +45,20 @@
 
 (function () {
     'use strict';
-    $('body').on('click', '[data-toogle]', function (event) {
+    $('body').on('click', '[data-toggle="link-modal"]', function (event) {
         event.preventDefault();
         var link = $(this);
-        var modal = link.data('data-modal')
-
+        var modalId = '#global-modal';
+        $.ajax({
+            url: link.attr('href'),
+            dataType: 'json',
+            type: "GET",
+            success: function (data) {
+                $(modalId).find('.modal-title').html(data.title);
+                $(modalId).find('.modal-body').html(data.body);
+                $(modalId).modal('show');
+            }
+        });
         return false;
     });
 }());

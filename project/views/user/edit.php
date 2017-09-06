@@ -13,7 +13,7 @@ $this->params['h1'] = 'Мой профиль';
     <?php
     $form = ActiveForm::begin([
         'options' => [
-            'class' => 'p-b-1 col-lg-8 central-block',
+            'class' => 'p-b-1 col-lg-12 central-block' . (Yii::$app->request->isAjax ? ' ajax-form' : ''),
             'autocomplete' => 'off',
             'id' => 'user-edit-form'
         ],
@@ -26,7 +26,15 @@ $this->params['h1'] = 'Мой профиль';
             <?= $form->field($model, 'username')->textInput()?>
         </div>
         <div class="col-lg-6">
-            <?=Html::a('изменить пароль', ['user/request-password-reset'])?>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'notification_type_id')->dropDownList($model::notification())?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'role_id')->dropDownList($model::role())?>
         </div>
     </div>
     <div class="row">
@@ -39,9 +47,6 @@ $this->params['h1'] = 'Мой профиль';
     </div>
     <hr>
     <div class="row">
-        <div class="col-lg-3">
-            <?= $form->field($model, 'notification_type_id')->dropDownList($model::notification())?>
-        </div>
         <div class="col-lg-12">
             <?= Html::submitButton('Изменить', ['class' => 'btn btn-primary btn-single']) ?>
         </div>

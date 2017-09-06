@@ -51,7 +51,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
-    private static function role()
+    public static function role()
     {
         return [
             self::ROLE_USER => 'Пользователь',
@@ -78,13 +78,13 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return [
             [['username', 'email'], 'required'],
             [['username'], 'string', 'max' => 255],
-            [['old_password_hash', 'password_hash'], 'string'],
+            [['password_hash'], 'string'],
             ['email', 'email'],
             [['email', 'username'], 'unique'],
             ['role_id', 'in', 'range' => array_keys(self::role())],
             ['notification_type_id', 'in', 'range' => array_keys(self::notification())],
             [['username'], 'safe', 'on' => ['update', 'create']],
-            ['role', 'default', 'value' => self::ROLE_USER],
+            ['role_id', 'default', 'value' => self::ROLE_USER],
             [['last_login', 'password_hash', 'password', 'confirmation_token'], 'safe']
         ];
     }

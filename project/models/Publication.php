@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%publication}}".
@@ -22,6 +23,12 @@ class Publication extends \yii\db\ActiveRecord
 {
     const STATUS_ACTIVE = 1;
     const STATUS_HIDDEN = 2;
+
+    /**
+     * @var UploadedFile
+     */
+    public $imageFile;
+
     /**
      * @inheritdoc
      */
@@ -49,7 +56,6 @@ class Publication extends \yii\db\ActiveRecord
             ],
             [
                 'class' => BlameableBehavior::class,
-                'createdByAttribute' => false,
             ],
         ];
     }
@@ -60,8 +66,9 @@ class Publication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             [['text'], 'string'],
-            [['created_at', 'updated_at'], 'required'],
+            [['annotation', 'name'], 'required'],
             [['created_at', 'updated_at', 'status_id'], 'integer'],
             ['status_id', 'in', 'range' => array_keys(self::status())],
             [['image', 'name'], 'string', 'max' => 255],
@@ -84,6 +91,22 @@ class Publication extends \yii\db\ActiveRecord
             'updated_at' => 'Дата обновления',
             'status_id' => 'Статус',
             'name' => 'Название',
+            'imageFile' => 'Картинка'
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (!empty($this->imageFile)) {
+            $fileName = md5($this->imageFile->baseName) . '.' . $this->imageFile->extension;
+
+            $this->imageFile->saveAs(Yii::getAlias('@app/web/img/') . $fileName);
+            $this->image = $fileName;
+        }
+
+        return parent::beforeSave($insert);
     }
 }

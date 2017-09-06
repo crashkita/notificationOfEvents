@@ -9,6 +9,7 @@ use app\models\search\UserSearch;
 use app\models\User;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\Response;
@@ -21,13 +22,32 @@ use yii\widgets\ActiveForm;
 class UserController extends Controller
 {
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'update'],
+                'rules' => [
+                    [
+                        'actions' => ['update', 'index'],
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
+    /**
      * Requests password reset
      * @return mixed
      */
     public function actionRequestPasswordReset()
     {
-        $this->layout = 'column1';
-
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -80,8 +100,6 @@ class UserController extends Controller
             }
         }
 
-        $this->layout = 'column1';
-
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
@@ -94,8 +112,6 @@ class UserController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout = 'column1';
-
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -112,8 +128,6 @@ class UserController extends Controller
 
     public function actionRegistration()
     {
-        $this->layout = 'column1';
-
         $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -124,6 +138,35 @@ class UserController extends Controller
             }
         }
         return $this->render('registration', ['model' => $model]);
+    }
+
+    public function actionCreate()
+    {
+        $model = new User();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                if ($model->save()) {
+                    return ['text' => 'Добавлен пользователь'];
+                } else {
+                    return ActiveForm::validate($model);
+                }
+            } elseif($model->save()) {
+                return $this->goHome();
+            }
+        }
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return [
+                'title' => 'Создание пользователя',
+                'body' => $this->renderAjax('registration', ['model' => $model])
+            ];
+        } else {
+            return $this->render('registration', ['model' => $model]);
+        }
     }
 
     /**
@@ -149,16 +192,32 @@ class UserController extends Controller
         }
     }
 
-    public function actionEdit()
+    public function actionUpdate()
     {
-        $model = User::findOne(Yii::$app->user->getId());
+        $model = User::findOne(Yii::$app->request->get('id'));
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->save()) {
-                return $this->redirect('edit');
+        if ($model->load(Yii::$app->request->post())) {
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                if ($model->save()) {
+                    return ['text' => 'Пользователь изменен'];
+                } else {
+                    return ActiveForm::validate($model);
+                }
+            } elseif($model->save()) {
+                return $this->goHome();
             }
         }
-        return $this->render('edit', ['model' => $model]);
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => 'Изменение пользователя:' . $model->name,
+                'body' => $this->renderAjax('edit', ['model' => $model])
+            ];
+        } else {
+            return $this->render('edit', ['model' => $model]);
+        }
     }
 
     /**

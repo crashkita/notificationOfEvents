@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\search\PublicationSearch;
+use dosamigos\editable\EditableAction;
 use Yii;
 use app\models\Publication;
 use app\models\searchPublicationSearch;
@@ -10,6 +11,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * PublicationController implements the CRUD actions for Publication model.
@@ -56,6 +59,19 @@ class PublicationController extends Controller
     }
 
     /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'editable' => [
+                'class' => EditableAction::class,
+                'modelClass' => Publication::class,
+                'forceCreate' => false
+            ]
+        ];
+    }
+    /**
      * Lists all Publication models.
      * @return mixed
      */
@@ -91,8 +107,11 @@ class PublicationController extends Controller
     {
         $model = new Publication();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -110,8 +129,11 @@ class PublicationController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -146,5 +168,18 @@ class PublicationController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @throws \yii\base\ExitException
+     */
+    public function actionEditable()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->request->get('id');
+        $value = Yii::$app->request->get('value');
+
+        Publication::updateAll(['value' => $value], ['id' => $id]);
+        return ['success' => true];
     }
 }

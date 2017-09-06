@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success', 'data-toggle' => 'link-modal']) ?>
     </p>
 
     <?= GridView::widget([
@@ -60,16 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
                 'headerOptions' => ['width' => 110]
             ],
-            // 'password_reset_token',
-            // 'created_at',
-            // 'updated_at',
-            // 'last_login',
-            // 'role_id',
-            // 'auth_key',
-            // 'notification_type_id',
-            // 'confirmation_token',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}',
+                'buttonOptions' => ['data-toggle' => 'link-modal']
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

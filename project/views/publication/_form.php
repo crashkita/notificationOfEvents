@@ -10,22 +10,33 @@ use yii\widgets\ActiveForm;
 
 <div class="publication-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'annotation')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'status_id')->textInput() ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php echo $form->errorSummary($model)?>
+    <div class="row">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'status_id')->dropDownList($model::status()) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'annotation')->textarea(['maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'imageFile')->fileInput() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <?= $form->field($model, 'text')->textarea(['maxlength' => true]) ?>
+        </div>
+    </div>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

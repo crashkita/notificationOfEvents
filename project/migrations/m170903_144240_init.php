@@ -21,7 +21,7 @@ class m170903_144240_init extends Migration
             'password_reset_token' => $this->string()->unique(),
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
-            'last_login' => $this->bigInteger()->notNull(),
+            'last_login' => $this->bigInteger(),
             'role_id' => $this->smallInteger(),
             'auth_key' => $this->string(32),
             'notification_type_id' => $this->smallInteger(),

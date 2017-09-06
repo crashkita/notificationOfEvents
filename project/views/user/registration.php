@@ -13,7 +13,7 @@ $this->params['h1'] = 'Регистрация';
     <?php
     $form = ActiveForm::begin([
         'options' => [
-            'class' => 'p-b-1 col-lg-8 central-block',
+            'class' => 'p-b-1 col-lg-12 central-block' . (Yii::$app->request->isAjax ? ' ajax-form' : ''),
             'autocomplete' => 'off',
             'id' => 'registration-form'
         ],

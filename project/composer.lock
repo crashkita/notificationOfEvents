@@ -4,159 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "27e6170ff49bd2279a7a3996010a020a",
+    "content-hash": "3c112b106bc168cb31a2c1903644e5c5",
     "packages": [
-        {
-            "name": "2amigos/yii2-dosamigos-asset-bundle",
-            "version": "0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yii2-dosamigos-asset-bundle.git",
-                "reference": "39316c82cf25a884b9037e758968e1323b4add33"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yii2-dosamigos-asset-bundle/zipball/39316c82cf25a884b9037e758968e1323b4add33",
-                "reference": "39316c82cf25a884b9037e758968e1323b4add33",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "dosamigos\\assets\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://2amigos.us"
-                }
-            ],
-            "description": "2amigOS! Asset Bundle for Yii2.",
-            "keywords": [
-                "asset",
-                "component",
-                "extension",
-                "yii"
-            ],
-            "time": "2014-09-01T13:43:36+00:00"
-        },
-        {
-            "name": "2amigos/yii2-editable-widget",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yii2-editable-widget.git",
-                "reference": "8f9190e045bc0d992f47a83aadf666dc5b6b9109"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yii2-editable-widget/zipball/8f9190e045bc0d992f47a83aadf666dc5b6b9109",
-                "reference": "8f9190e045bc0d992f47a83aadf666dc5b6b9109",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/select2": "~4.0",
-                "yiisoft/yii2": "~2.0.5",
-                "yiisoft/yii2-bootstrap": "~2.0.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
-                "asset-installer-paths": {
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "dosamigos\\editable\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "2amigOS! Consulting Group",
-                    "email": "hola@2amigos.us",
-                    "homepage": "http://2amigos.us",
-                    "role": "Developer"
-                }
-            ],
-            "description": "X-Editable widget for Yii2.",
-            "homepage": "http://yiiwheels.com/extension/editable-widget",
-            "keywords": [
-                "2amigos",
-                "extension",
-                "widget",
-                "x-editable",
-                "yii",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2017-08-04T15:30:43+00:00"
-        },
-        {
-            "name": "2amigos/yii2-grid-view-library",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yii2-grid-view-library.git",
-                "reference": "31ca114deaf337b3e799cf1e8f963c372e4873a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yii2-grid-view-library/zipball/31ca114deaf337b3e799cf1e8f963c372e4873a8",
-                "reference": "31ca114deaf337b3e799cf1e8f963c372e4873a8",
-                "shasum": ""
-            },
-            "require": {
-                "2amigos/yii2-dosamigos-asset-bundle": "0.1.*",
-                "2amigos/yii2-editable-widget": "*",
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "dosamigos\\grid\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://2amigos.us"
-                }
-            ],
-            "description": "GridView Widget Extensions for Yii2.",
-            "keywords": [
-                "extension",
-                "grid",
-                "widget",
-                "yii"
-            ],
-            "time": "2014-12-17T09:28:22+00:00"
-        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.7",
@@ -255,22 +104,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "shasum": null
-            },
-            "type": "bower-asset"
-        },
-        {
-            "name": "bower-asset/select2",
-            "version": "4.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/select2/select2.git",
-                "reference": "566c7846fbf8c3b7674346f26d0ee872c0a77629"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/566c7846fbf8c3b7674346f26d0ee872c0a77629",
-                "reference": "566c7846fbf8c3b7674346f26d0ee872c0a77629",
                 "shasum": null
             },
             "type": "bower-asset"
@@ -403,6 +236,60 @@
                 "html"
             ],
             "time": "2017-06-03T02:28:16+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-date-range",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-date-range.git",
+                "reference": "908e8175f3f8c091d425bcaba6e18871d63291a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-date-range/zipball/908e8175f3f8c091d425bcaba6e18871d63291a0",
+                "reference": "908e8175f3f8c091d425bcaba6e18871d63291a0",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\daterange\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An advanced Yii 2 date range picker input for based on bootstrap-daterangepicker plugin.",
+            "homepage": "https://github.com/kartik-v/yii2-date-range",
+            "keywords": [
+                "bootstrap",
+                "bootstrap 3",
+                "date",
+                "date-range",
+                "extension",
+                "range",
+                "time",
+                "widget",
+                "yii2"
+            ],
+            "time": "2017-08-08T04:26:22+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -674,12 +561,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "a407a75d927ec2060bb012ced9ec98c4177f56e3"
+                "reference": "31e986b5718627a3f4473a05071785d4fb724fba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/a407a75d927ec2060bb012ced9ec98c4177f56e3",
-                "reference": "a407a75d927ec2060bb012ced9ec98c4177f56e3",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/31e986b5718627a3f4473a05071785d4fb724fba",
+                "reference": "31e986b5718627a3f4473a05071785d4fb724fba",
                 "shasum": ""
             },
             "require": {
@@ -766,7 +653,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2017-09-01T21:49:53+00:00"
+            "time": "2017-09-05T22:49:43+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -941,12 +828,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "633549c771ae745af3e0e4ea26665b29ec01b7b9"
+                "reference": "4e72090742a40b5a212d19c685d1e72f3a8ef4f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/633549c771ae745af3e0e4ea26665b29ec01b7b9",
-                "reference": "633549c771ae745af3e0e4ea26665b29ec01b7b9",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/4e72090742a40b5a212d19c685d1e72f3a8ef4f5",
+                "reference": "4e72090742a40b5a212d19c685d1e72f3a8ef4f5",
                 "shasum": ""
             },
             "require": {
@@ -983,7 +870,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-09-04T07:21:24+00:00"
+            "time": "2017-09-05T14:47:43+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -1221,12 +1108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "8cc10206d1633d2b2288135841a9f232f2b78d33"
+                "reference": "c2680ad85f16871c330398aaf08dfa09427b3351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/8cc10206d1633d2b2288135841a9f232f2b78d33",
-                "reference": "8cc10206d1633d2b2288135841a9f232f2b78d33",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/c2680ad85f16871c330398aaf08dfa09427b3351",
+                "reference": "c2680ad85f16871c330398aaf08dfa09427b3351",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1147,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2017-09-04T09:43:21+00:00"
+            "time": "2017-09-05T23:21:31+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -1365,7 +1252,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "kartik-v/yii2-date-range": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

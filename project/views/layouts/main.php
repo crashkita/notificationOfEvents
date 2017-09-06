@@ -25,7 +25,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
+<?=$this->render('_modal');?>
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -39,6 +39,16 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
+            [
+                'label' => 'Пользователи',
+                'url' => ['user/index'],
+//                'visible' => Yii::$app->user->can('admin')
+            ],
+            [
+                'label' => 'Публикации',
+                'url' => ['publication/index'],
+//                'visible' => Yii::$app->user->can('admin')
+            ],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (

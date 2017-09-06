@@ -15,6 +15,7 @@ class PublicationSearch extends Model
     public $id;
     public $status_id;
     public $name;
+    public $created_at;
     /**
      * @inheritdoc
      */
@@ -22,7 +23,7 @@ class PublicationSearch extends Model
     {
         return [
             [['id',  'status_id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'created_at'], 'safe'],
         ];
     }
 
@@ -56,6 +57,16 @@ class PublicationSearch extends Model
             'id' => $this->id,
             'status_id' => $this->status_id,
         ]);
+
+        if($this->created_at) {
+            list($minDate, $maxDate) = explode(' - ', $this->created_at);
+            $query->andWhere([
+                'between',
+                'created_at',
+                strtotime($minDate),
+                strtotime($maxDate)
+            ]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 

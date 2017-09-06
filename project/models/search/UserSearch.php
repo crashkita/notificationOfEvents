@@ -24,8 +24,8 @@ class UserSearch extends Model
     public function rules()
     {
         return [
-            [['id', 'created_at', 'last_login'], 'integer'],
-            [['username', 'email'], 'safe'],
+            [['id',], 'integer'],
+            [['username', 'email',  'created_at', 'last_login'], 'safe'],
         ];
     }
 
@@ -57,12 +57,29 @@ class UserSearch extends Model
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'last_login' => $this->last_login,
         ]);
+
+        if($this->created_at) {
+            $query->andWhere([
+                'between',
+                'created_at',
+                strtotime($this->created_at),
+                strtotime($this->created_at . ' +1 day')
+            ]);
+        }
+
+        if($this->last_login) {
+            $query->andWhere([
+                'between',
+                'last_login',
+                strtotime($this->last_login),
+                strtotime($this->last_login .  ' 1 day')
+            ]);
+        }
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email]);
+
 
         return $dataProvider;
     }
