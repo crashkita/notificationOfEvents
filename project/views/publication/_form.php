@@ -8,11 +8,15 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="publication-form">
+<div class="row">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-    <?php echo $form->errorSummary($model)?>
-    <div class="row">
+    <?php $form = ActiveForm::begin([
+            'options' => [
+                'enctype' => 'multipart/form-data',
+                'class' => 'p-b-1 col-lg-12 central-block' . (Yii::$app->request->isAjax ? ' ajax-form' : '')
+            ]
+    ]); ?>
+     <div class="row">
         <div class="col-lg-6"></div>
         <div class="col-lg-6"></div>
     </div>

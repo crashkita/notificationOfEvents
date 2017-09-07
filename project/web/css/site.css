@@ -113,3 +113,30 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.publication {
+     height: 400px;
+    overflow: hidden;
+    padding: 20px
+}
+
+.publication > .header {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.publication > .header > a {
+    color: black;
+    text-decoration: none;
+}
+
+.publication > .image {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pager {
+    display: inline-block;
+    float: right;
+}

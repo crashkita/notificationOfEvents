@@ -20,15 +20,16 @@ use Yii;
  * @property integer $updated_at
  * @property string $name
  * @property integer $last_login
+ * @property integer $notification_type_id
  * @property string $confirmation_token
  * @property string $password write-only password
  * @package app\models
  */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
-    const NOTIFICATION_EMAIL = 1;
-    const NOTIFICATION_BROWSER = 2;
-    const NOTIFICATION_ALL = 3;
+    const NOTIFICATION_EMAIL = Notification::TYPE_EMAIL;
+    const NOTIFICATION_BROWSER = Notification::TYPE_BROWSER;
+    const NOTIFICATION_ALL = Notification::TYPE_BROWSER_AND_EMAIL;
 
     const ROLE_USER = 10;
     const ROLE_MODERATOR = 20;

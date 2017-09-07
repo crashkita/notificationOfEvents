@@ -13,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use yii\widgets\ActiveForm;
 
 /**
  * PublicationController implements the CRUD actions for Publication model.
@@ -59,19 +60,6 @@ class PublicationController extends Controller
     }
 
     /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'editable' => [
-                'class' => EditableAction::class,
-                'modelClass' => Publication::class,
-                'forceCreate' => false
-            ]
-        ];
-    }
-    /**
      * Lists all Publication models.
      * @return mixed
      */
@@ -87,18 +75,6 @@ class PublicationController extends Controller
     }
 
     /**
-     * Displays a single Publication model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Publication model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -109,14 +85,28 @@ class PublicationController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                if ($model->save()) {
+                    return ['text' => 'Добавлена публикациия', 'success' => true];
+                } else {
+                    return ActiveForm::validate($model);
+                }
+            } elseif($model->save()) {
+                return $this->goHome();
             }
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return [
+                'title' => 'Создание публикации',
+                'body' => $this->renderAjax('_form', ['model' => $model])
+            ];
+        } else {
+            return $this->render('_form', ['model' => $model]);
+        }
     }
 
     /**
@@ -127,18 +117,31 @@ class PublicationController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Publication::findOne(Yii::$app->request->get('id'));
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                if ($model->save()) {
+                    return ['text' => 'Публикация изменена', 'success' => true];
+                } else {
+                    return ActiveForm::validate($model);
+                }
+            } elseif($model->save()) {
+                return $this->goHome();
             }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => 'Изменение публикации:' . $model->name,
+                'body' => $this->renderAjax('_form', ['model' => $model])
+            ];
+        } else {
+            return $this->render('_form', ['model' => $model]);
+        }
     }
 
     /**
@@ -177,9 +180,20 @@ class PublicationController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $id = Yii::$app->request->get('id');
-        $value = Yii::$app->request->get('value');
+        $value = Yii::$app->request->get('status');
 
-        Publication::updateAll(['value' => $value], ['id' => $id]);
+        Publication::updateAll(['status_id' => $value], ['id' => $id]);
         return ['success' => true];
+    }
+
+    public function actionView($id)
+    {
+        $model = Publication::findOne($id);
+
+        if (empty($model)) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->render('view', ['model' => $model]);
     }
 }

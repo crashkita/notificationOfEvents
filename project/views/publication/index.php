@@ -20,7 +20,7 @@ $this->registerJs("
         event.preventDefault();
         var id = $(this).data('id');
         var value = $(this).val();
-        var data = {id:id, value:value};
+        var data = {id:id, status:value};
         $.ajax({
             type: 'GET',
             url: '{$editorUrl}',
@@ -42,29 +42,25 @@ $this->registerJs("
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Publication', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Publication', ['create'], ['class' => 'btn btn-success', 'data-toggle' => 'link-modal']) ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
-            'image',
             'annotation',
             'text:ntext',
             [
-                'attribute' => 'value',
+                'attribute' => 'status_id',
                 'format' => 'raw',
                 'value' => function (Publication $model) {
                     return Html::dropDownList('id' . $model->id, $model->status_id, $model::status(), ['class' => 'select form-control', 'data-id' => $model->id, 'prompt' => '---']);
                 },
+                'filter' => Publication::status()
             ],
             [
                 'attribute' => 'created_at',
@@ -80,7 +76,11 @@ $this->registerJs("
                     ],
                 ]),
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}',
+                'buttonOptions' => ['data-toggle' => 'link-modal']
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

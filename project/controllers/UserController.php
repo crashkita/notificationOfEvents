@@ -148,7 +148,7 @@ class UserController extends Controller
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 if ($model->save()) {
-                    return ['text' => 'Добавлен пользователь'];
+                    return ['text' => 'Добавлен пользователь', 'success' => true];
                 } else {
                     return ActiveForm::validate($model);
                 }
@@ -200,7 +200,7 @@ class UserController extends Controller
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 if ($model->save()) {
-                    return ['text' => 'Пользователь изменен'];
+                    return ['text' => 'Пользователь изменен', 'success' => true];
                 } else {
                     return ActiveForm::validate($model);
                 }

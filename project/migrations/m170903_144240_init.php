@@ -37,8 +37,8 @@ class m170903_144240_init extends Migration
             'text' => $this->text(),
             'created_at' => $this->bigInteger()->notNull(),
             'updated_at' => $this->bigInteger()->notNull(),
-            'created_by' => $this->integer()->notNull(),
-            'updated_by' => $this->integer()->notNull(),
+            'created_by' => $this->integer(),
+            'updated_by' => $this->integer(),
             'status_id' => $this->smallInteger(),
             'name' => $this->string(),
         ]);

@@ -3,12 +3,29 @@
     $('body').on('submit', '.ajax-form', function (event) {
         event.preventDefault();
         var form = $(this);
+        var method = $(this).attr('method');
+        var action = $(this).attr('action');
+        if ($(this).attr('enctype') == 'multipart/form-data') {
+            var formData = new FormData($(this)[0]);
+            var cache = false;
+            var contentType = false;
+            var processData = false;
+        } else {
+            var formData = $(this).serialize();
+            var cache = true;
+            var contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+            var processData = true;
+        }
+
         $.ajax({
-            'url': form.attr('action'),
-            'data': form.serialize(),
-            'method': form.attr('method'),
-            'dataType': 'json',
-            'success': function (response) {
+            type: method,
+            url: action,
+            data: formData,
+            cache: cache,
+            contentType: contentType,
+            processData: processData,
+            dataType: 'json',
+            success: function (response) {
                 form.find('input').closest('div').removeClass('error');
                 form.find('.help-block, .text-danger').html('');
 
@@ -31,7 +48,7 @@
                     return;
                 }
 
-                form.replaceWith('<h5 class="alert alert-success">'+response.text+'</h5>');
+                form.html('<h5 class="alert alert-success">'+response.text+'</h5>');
             },
             'error': function () {
                 form.html('<h5 class="alert alert-danger">В работе сервиса произошёл сбой. Приносим свои извинения.</h5>');

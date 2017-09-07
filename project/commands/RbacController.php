@@ -35,12 +35,12 @@ class RbacController extends Controller
         $auth->add($moderator);
         $auth->addChild($moderator, $user);
 
-        // add "createpublication" permission
+        // add "createPublication" permission
         $createpublication = $auth->createPermission('createPublication');
         $createpublication->description = 'Create a publication';
         $auth->add($createpublication);
 
-        // add "updatepublication" permission
+        // add "updatePublication" permission
         $updatepublication = $auth->createPermission('updatePublication');
         $updatepublication->description = 'Update publication';
         $auth->add($updatepublication);
@@ -48,17 +48,17 @@ class RbacController extends Controller
         $rule = new AuthorRule();
         $auth->add($rule);
 
-        // add the "updateOwnpublication" permission and associate the rule with it.
-        $updateOwnpublication = $auth->createPermission('updateOwnPublication');
-        $updateOwnpublication->description = 'Update own publication';
-        $updateOwnpublication->ruleName = $rule->name;
-        $auth->add($updateOwnpublication);
+        // add the "updateOwnPublication" permission and associate the rule with it.
+        $updateOwnPublication = $auth->createPermission('updateOwnPublication');
+        $updateOwnPublication->description = 'Update own publication';
+        $updateOwnPublication->ruleName = $rule->name;
+        $auth->add($updateOwnPublication);
 
-        // "updateOwnpublication" will be used from "updatepublication"
-        $auth->addChild($updateOwnpublication, $updatepublication);
+        // "updateOwnPublication" will be used from "updatepublication"
+        $auth->addChild($updateOwnPublication, $updatepublication);
 
         // allow "author" to update their own publications
-        $auth->addChild($moderator, $updateOwnpublication);
+        $auth->addChild($moderator, $updateOwnPublication);
 
         $admin = $auth->createRole('admin');
         $admin->description = 'Admin';

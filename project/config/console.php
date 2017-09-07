@@ -20,10 +20,29 @@ $config = [
                 ],
             ],
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
         'db' => $db,
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '<controller>/index' => '<controller>/index',
+                '<controller>/update/<id:\d+>' => '<controller>/update',
+                '<controller>/edit/<id:\d+>' => '<controller>/edit',
+                '<controller>/delete/<id:\d+>' => '<controller>/delete',
+                '<controller>/create' => '<controller>/create',
+                '<controller>/view/<id:\d+>' => '<controller>/view',
+            ],
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@app/mail',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => '127.0.0.1',
+                'port' => '25',
+            ],
+            'useFileTransport' => true,
+        ],
     ],
     'params' => $params,
     /*
