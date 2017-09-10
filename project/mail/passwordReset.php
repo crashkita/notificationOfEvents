@@ -7,7 +7,7 @@ use yii\helpers\Html;
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['user/reset-password', 'token' => $user->password_reset_token]);
 ?>
 <p>
-    Вы получили это сообщение, так как являетесь зарегистрированным пользователем сайта http://www.drivenn.ru
+    Вы получили это сообщение, так как являетесь зарегистрированным пользователем сайта
 </p>
 <p>
     Имя (ФИО): <?=$user->name?>

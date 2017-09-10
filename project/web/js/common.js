@@ -1,3 +1,6 @@
+/**
+ * Ajax form
+ */
 (function () {
     'use strict';
     $('body').on('submit', '.ajax-form', function (event) {
@@ -60,6 +63,9 @@
     });
 }());
 
+/**
+ * Modal load html
+ */
 (function () {
     'use strict';
     $('body').on('click', '[data-toggle="link-modal"]', function (event) {
@@ -77,5 +83,32 @@
             }
         });
         return false;
+    });
+}());
+
+/**
+ * Hide notification
+ */
+(function () {
+    'use strict';
+    $('body').on('click', '[data-toggle="alert-hide"]', function (event) {
+        var publicationId = $(this).data('notification-id');
+        $.ajax({
+            url: '/notification/hide',
+            dataType: 'json',
+            type: "GET",
+            data:{id:publicationId},
+        });
+        return true;
+    });
+}());
+
+/**
+ * Close modal and update page
+ */
+(function () {
+    'use strict';
+    $('body').on('click', '#global-modal button.close', function (event) {
+        location.reload();
     });
 }());

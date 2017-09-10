@@ -1,7 +1,10 @@
 <?php
 namespace app\widgets;
 
+use app\models\Notification;
 use Yii;
+use yii\helpers\Html;
+use yii\bootstrap\Alert as BootstrapAlert;
 
 /**
  * Alert widget renders a message from session flash. All flash messages are displayed
@@ -48,9 +51,20 @@ class Alert extends \yii\bootstrap\Widget
      */
     public function run()
     {
+        return $this->publicationRender() . $this->flashRender();
+    }
+
+    /**
+     * Render alert from session
+     * @return string
+     */
+    protected function flashRender()
+    {
         $session = Yii::$app->session;
         $flashes = $session->getAllFlashes();
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
+
+        $content = '';
 
         foreach ($flashes as $type => $flash) {
             if (!isset($this->alertTypes[$type])) {
@@ -58,7 +72,7 @@ class Alert extends \yii\bootstrap\Widget
             }
 
             foreach ((array) $flash as $i => $message) {
-                echo \yii\bootstrap\Alert::widget([
+                $content .= BootstrapAlert::widget([
                     'body' => $message,
                     'closeButton' => $this->closeButton,
                     'options' => array_merge($this->options, [
@@ -70,5 +84,56 @@ class Alert extends \yii\bootstrap\Widget
 
             $session->removeFlash($type);
         }
+
+        return $content;
+    }
+
+    /**
+     * Render publication alert
+     * @return string
+     */
+    protected function publicationRender()
+    {
+        $content = '';
+        if (!Yii::$app->user->isGuest) {
+            $userId = Yii::$app->user->id;
+            $notifications = Notification::find()->andWhere(
+                [
+                    'status_id' => Notification::STATUS_ACTIVE,
+                    'user_id' => $userId
+                ]
+            )->andWhere([
+                'IN', 'type_id',
+                [
+                    Notification::TYPE_BROWSER_AND_EMAIL,
+                    Notification::TYPE_BROWSER
+                ]
+            ])->all();
+
+            $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
+
+            foreach ($notifications as $index => $notification) {
+                $publication = $notification->publication;
+                $message = 'Новая побликация ' . Html::a($publication->name, ['publication/view', 'id' => $publication->id]);
+
+                $closeButtonOptions = [
+                    'data' => [
+                        'toggle' => "alert-hide",
+                        'notification-id' => $notification->id
+                    ]
+
+                ];
+                $content .= BootstrapAlert::widget([
+                    'body' => $message,
+                    'closeButton' => $closeButtonOptions,
+                    'options' => array_merge($this->options, [
+                        'id' => $this->getId() . '-info-publication-' . $index,
+                        'class' => $this->alertTypes['info'] . $appendClass,
+                    ]),
+                ]);
+            }
+        }
+
+        return $content;
     }
 }

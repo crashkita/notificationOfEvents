@@ -36,14 +36,14 @@ class RbacController extends Controller
         $auth->addChild($moderator, $user);
 
         // add "createPublication" permission
-        $createpublication = $auth->createPermission('createPublication');
-        $createpublication->description = 'Create a publication';
-        $auth->add($createpublication);
+        $createPublication = $auth->createPermission('createPublication');
+        $createPublication->description = 'Create a publication';
+        $auth->add($createPublication);
 
         // add "updatePublication" permission
-        $updatepublication = $auth->createPermission('updatePublication');
-        $updatepublication->description = 'Update publication';
-        $auth->add($updatepublication);
+        $updatePublication = $auth->createPermission('updatePublication');
+        $updatePublication->description = 'Update publication';
+        $auth->add($updatePublication);
 
         $rule = new AuthorRule();
         $auth->add($rule);
@@ -54,8 +54,8 @@ class RbacController extends Controller
         $updateOwnPublication->ruleName = $rule->name;
         $auth->add($updateOwnPublication);
 
-        // "updateOwnPublication" will be used from "updatepublication"
-        $auth->addChild($updateOwnPublication, $updatepublication);
+        // "updateOwnPublication" will be used from "updatePublication"
+        $auth->addChild($updateOwnPublication, $updatePublication);
 
         // allow "author" to update their own publications
         $auth->addChild($moderator, $updateOwnPublication);
@@ -65,6 +65,6 @@ class RbacController extends Controller
         $admin->ruleName = $groupRule->name;
         $auth->add($admin);
         $auth->addChild($admin, $moderator);
-        $auth->addChild($admin, $updatepublication);
+        $auth->addChild($admin, $updatePublication);
     }
 }

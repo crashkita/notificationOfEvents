@@ -36,7 +36,11 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['user', 'moderator', 'admin'],
+            'itemFile' => '@app/rbac/items.php',
+            'assignmentFile' => '@app/rbac/assignments.php',
+            'ruleFile' => '@app/rbac/rules.php',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

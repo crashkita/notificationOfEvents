@@ -112,11 +112,15 @@ class Publication extends \yii\db\ActiveRecord
     }
 
     /**
+     * Retutr image url
      * @return bool|string
      */
     public function getImageUrl()
     {
-        return Yii::getAlias('@web/img/' . $this->image );
+        if (!empty($this->image)) {
+            return Yii::getAlias('@web/img/' . $this->image );
+        }
+        return null;
     }
 
     /**

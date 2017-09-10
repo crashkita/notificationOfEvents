@@ -41,9 +41,14 @@ $this->registerJs("
 <div class="publication-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php
+    if (Yii::$app->user->can('moderate')) {
+        echo Html::a('Create Publication', ['create'], ['class' => 'btn btn-success', 'data-toggle' => 'link-modal']);
+    }
+    ?>
     <?php Pjax::begin(); ?>
     <p>
-        <?= Html::a('Create Publication', ['create'], ['class' => 'btn btn-success', 'data-toggle' => 'link-modal']) ?>
+
     </p>
 
     <?= GridView::widget([
@@ -52,13 +57,14 @@ $this->registerJs("
         'columns' => [
             'id',
             'name',
-            'annotation',
-            'text:ntext',
             [
                 'attribute' => 'status_id',
                 'format' => 'raw',
                 'value' => function (Publication $model) {
-                    return Html::dropDownList('id' . $model->id, $model->status_id, $model::status(), ['class' => 'select form-control', 'data-id' => $model->id, 'prompt' => '---']);
+                    if (Yii::$app->user->can('updatePublication', ['publication' => $model])) {
+                        return Html::dropDownList('id' . $model->id, $model->status_id, $model::status(), ['class' => 'select form-control', 'data-id' => $model->id, 'prompt' => '---']);
+                    }
+                    return $model::status()[$model->status_id];
                 },
                 'filter' => Publication::status()
             ],
@@ -78,8 +84,38 @@ $this->registerJs("
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}',
-                'buttonOptions' => ['data-toggle' => 'link-modal']
+                'template' => '{update} {delete}',
+                'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        if (!Yii::$app->user->can('updatePublication', ['publication' => $model])) {
+                            return null;
+                        }
+                        $title = Yii::t('yii', 'Update');
+                        $options = [
+                            'title' => $title,
+                            'aria-label' => $title,
+                            'data-pjax' => '0',
+                            'data-toggle' => 'link-modal'
+                        ];
+                        $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-pencil"]);
+                        return Html::a($icon, $url, $options);
+                    },
+                    'delete' => function ($url, $model, $key) {
+                        if (!Yii::$app->user->can('updatePublication', ['publication' => $model])) {
+                            return null;
+                        }
+                        $title = Yii::t('yii', 'Delete');
+                        $options = [
+                            'title' => $title,
+                            'aria-label' => $title,
+                            'data-pjax' => '0',
+                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-method' => 'post',
+                        ];
+                        $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-trash"]);
+                        return Html::a($icon, $url, $options);
+                    }
+                ]
             ],
         ],
     ]); ?>

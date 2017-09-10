@@ -24,6 +24,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'baseUrl' => 'http://notification-event.loc:8094',
             'rules' => [
                 '<controller>/index' => '<controller>/index',
                 '<controller>/update/<id:\d+>' => '<controller>/update',
@@ -32,6 +33,13 @@ $config = [
                 '<controller>/create' => '<controller>/create',
                 '<controller>/view/<id:\d+>' => '<controller>/view',
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['user', 'moderator', 'admin', 'product_moderator'],
+            'itemFile' => '@app/rbac/items.php',
+            'assignmentFile' => '@app/rbac/assignments.php',
+            'ruleFile' => '@app/rbac/rules.php',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

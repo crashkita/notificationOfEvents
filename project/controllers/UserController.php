@@ -147,7 +147,9 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
+                $model->generateConfirm();
                 if ($model->save()) {
+                    $model->sendGeneratePassword();
                     return ['text' => 'Добавлен пользователь', 'success' => true];
                 } else {
                     return ActiveForm::validate($model);
@@ -162,10 +164,10 @@ class UserController extends Controller
 
             return [
                 'title' => 'Создание пользователя',
-                'body' => $this->renderAjax('registration', ['model' => $model])
+                'body' => $this->renderAjax('create', ['model' => $model])
             ];
         } else {
-            return $this->render('registration', ['model' => $model]);
+            return $this->render('create', ['model' => $model]);
         }
     }
 
@@ -187,14 +189,15 @@ class UserController extends Controller
             if (Yii::$app->user->isGuest) {
                 return $this->render('confirmSuccess');
             } else {
-                return $this->redirect('edit');
+                return $this->redirect('update');
             }
         }
     }
 
     public function actionUpdate()
     {
-        $model = User::findOne(Yii::$app->request->get('id'));
+        $userId = Yii::$app->request->get('id', Yii::$app->user->id);
+        $model = User::findOne($userId);
 
         if ($model->load(Yii::$app->request->post())) {
             if (Yii::$app->request->isAjax) {
@@ -232,6 +235,46 @@ class UserController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionConfirmNewUser($token)
+    {
+        $user = User::findOne(['confirmation_token' => $token]);
+        /** @var User $user */
+
+        if ($user === null) {
+            throw new BadRequestHttpException;
+        }
+
+        $user->generatePasswordResetToken();
+        if ($user->confirm()) {
+            Yii::$app->session->setFlash('success', 'Активация профиля прошла успешно');
+
+            if (Yii::$app->user->isGuest) {
+                return $this->redirect(['new-password', 'token' => $user->password_reset_token]);
+            } else {
+                return $this->redirect('update');
+            }
+        }
+    }
+
+    public function actionNewPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->resetPassword();
+            Yii::$app->session->setFlash('success', 'Ваш пароль установлен');
+            return $this->redirect('/site/index');
+        }
+
+        return $this->render('newPassword', [
+            'model' => $model,
         ]);
     }
 }

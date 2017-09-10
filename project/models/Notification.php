@@ -18,6 +18,8 @@ use yii\helpers\Url;
  *
  * @property Publication $publication
  * @property User $user
+ *
+ * @package app\models
  */
 class Notification extends \yii\db\ActiveRecord
 {
@@ -97,7 +99,7 @@ class Notification extends \yii\db\ActiveRecord
                 ]
             )
             ->setFrom(Yii::$app->params['senderEmail'])
-            ->setTo($this->email)
+            ->setTo($this->user->email)
             ->setSubject('Новая публикация')
             ->send();
     }

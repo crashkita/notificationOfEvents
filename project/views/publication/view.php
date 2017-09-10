@@ -15,7 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="row">
-        <?=Html::img($model->imageUrl, ['width' => 900, 'height' => 400])?>
+        <?php
+        if (!empty($model->imageUrl)) {
+            echo Html::img($model->imageUrl, ['width' => 900, 'height' => 400]);
+        }
+        ?>
     </div>
     <p>
         <?=$model->text?>

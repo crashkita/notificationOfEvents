@@ -11,6 +11,23 @@ return [
         'ruleName' => 'userGroup',
         'children' => [
             'user',
+            'updateOwnPublication',
+        ],
+    ],
+    'createPublication' => [
+        'type' => 2,
+        'description' => 'Create a publication',
+    ],
+    'updatePublication' => [
+        'type' => 2,
+        'description' => 'Update publication',
+    ],
+    'updateOwnPublication' => [
+        'type' => 2,
+        'description' => 'Update own publication',
+        'ruleName' => 'isAuthor',
+        'children' => [
+            'updatePublication',
         ],
     ],
     'admin' => [
@@ -19,6 +36,7 @@ return [
         'ruleName' => 'userGroup',
         'children' => [
             'moderator',
+            'updatePublication',
         ],
     ],
 ];

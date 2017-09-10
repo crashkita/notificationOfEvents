@@ -26,23 +26,18 @@ $this->params['h1'] = 'Мой профиль';
             <?= $form->field($model, 'username')->textInput()?>
         </div>
         <div class="col-lg-6">
-
+            <?= $form->field($model, 'name')->textInput()?>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <?= $form->field($model, 'notification_type_id')->dropDownList($model::notification())?>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <?= $form->field($model, 'role_id')->dropDownList($model::role())?>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <?= $form->field($model, 'email')->textInput()?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'name')->textInput()?>
         </div>
     </div>
     <hr>

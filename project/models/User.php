@@ -315,4 +315,22 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             ->setSubject('Активация аккаунта пользователя')
             ->send();
     }
+
+    public function sendGeneratePassword()
+    {
+        $url = Url::to(['user/confirm-new-user', 'token' => $this->confirmation_token], true);
+        return Yii::$app
+            ->mailer
+            ->compose(
+                'confirmNewUser',
+                [
+                    'user' => $this,
+                    'url' => $url
+                ]
+            )
+            ->setFrom(Yii::$app->params['senderEmail'])
+            ->setTo($this->email)
+            ->setSubject('Активация аккаунта пользователя')
+            ->send();
+    }
 }

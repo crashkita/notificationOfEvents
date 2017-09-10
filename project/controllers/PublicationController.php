@@ -2,11 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Notification;
 use app\models\search\PublicationSearch;
-use dosamigos\editable\EditableAction;
 use Yii;
 use app\models\Publication;
-use app\models\searchPublicationSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -32,27 +31,33 @@ class PublicationController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index'],
-                        'roles' => ['managePost'],
+                        'roles' => ['moderator', 'admin'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['view'],
-                        'roles' => ['viewPost'],
+                        'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['create'],
-                        'roles' => ['createPost'],
+                        'roles' => ['moderator', 'admin'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['update'],
-                        'roles' => ['updatePost'],
+                        'roles' => ['updatePublication'],
+                        'roleParams' => function($rule) {
+                            return ['publication' => Publication::findOne(Yii::$app->request->get('id'))];
+                        },
                     ],
                     [
                         'allow' => true,
                         'actions' => ['delete'],
-                        'roles' => ['deletePost'],
+                        'roles' => ['updatePublication'],
+                        'roleParams' => function($rule) {
+                            return ['publication' => Publication::findOne(Yii::$app->request->get('id'))];
+                        },
                     ],
                 ],
             ],
@@ -194,6 +199,17 @@ class PublicationController extends Controller
             throw new NotFoundHttpException();
         }
 
+        $userId = Yii::$app->user->id;
+        if (!empty($userId)) {
+            Notification::updateAll(
+                [
+                    'status_id' => Notification::STATUS_HIDDEN
+                ],
+                [
+                    'user_id' => $userId, 'publication_id' => $id
+                ]
+            );
+        }
         return $this->render('view', ['model' => $model]);
     }
 }
